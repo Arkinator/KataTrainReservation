@@ -1,0 +1,19 @@
+{
+  "id" : "4788dc7b-ee31-4469-a986-730dd171ebb3",
+  "name" : "data_for_train_local_1000",
+  "request" : {
+    "url" : "/data_for_train/local_1000",
+    "method" : "GET"
+  },
+  "response" : {
+    "status" : 200,
+    "body" : "{\"seats\": {\"1A\": {\"coach\": \"A\", \"seat_number\": \"1\", \"booking_reference\": \"\"}, \"2A\": {\"coach\": \"A\", \"seat_number\": \"2\", \"booking_reference\": \"\"}, \"3A\": {\"coach\": \"A\", \"seat_number\": \"3\", \"booking_reference\": \"\"}, \"4A\": {\"coach\": \"A\", \"seat_number\": \"4\", \"booking_reference\": \"\"}, \"1B\": {\"coach\": \"B\", \"seat_number\": \"1\", \"booking_reference\": \"\"}, \"2B\": {\"coach\": \"B\", \"seat_number\": \"2\", \"booking_reference\": \"\"}, \"3B\": {\"coach\": \"B\", \"seat_number\": \"3\", \"booking_reference\": \"\"}, \"4B\": {\"coach\": \"B\", \"seat_number\": \"4\", \"booking_reference\": \"\"}, \"5B\": {\"coach\": \"B\", \"seat_number\": \"5\", \"booking_reference\": \"\"}, \"6B\": {\"coach\": \"B\", \"seat_number\": \"6\", \"booking_reference\": \"\"}, \"7B\": {\"coach\": \"B\", \"seat_number\": \"7\", \"booking_reference\": \"\"}, \"8B\": {\"coach\": \"B\", \"seat_number\": \"8\", \"booking_reference\": \"\"}, \"1C\": {\"coach\": \"C\", \"seat_number\": \"1\", \"booking_reference\": \"\"}, \"2C\": {\"coach\": \"C\", \"seat_number\": \"2\", \"booking_reference\": \"\"}, \"3C\": {\"coach\": \"C\", \"seat_number\": \"3\", \"booking_reference\": \"\"}, \"4C\": {\"coach\": \"C\", \"seat_number\": \"4\", \"booking_reference\": \"\"}}}",
+    "headers" : {
+      "Content-Type" : "text/html;charset=utf-8",
+      "Server" : "CherryPy/18.0.0",
+      "Date" : "Wed, 05 Sep 2018 15:19:31 GMT"
+    }
+  },
+  "uuid" : "4788dc7b-ee31-4469-a986-730dd171ebb3",
+  "persistent" : true
+}

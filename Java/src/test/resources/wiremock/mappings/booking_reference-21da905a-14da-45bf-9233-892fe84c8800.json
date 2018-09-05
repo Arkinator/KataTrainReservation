@@ -1,0 +1,19 @@
+{
+  "id" : "21da905a-14da-45bf-9233-892fe84c8800",
+  "name" : "booking_reference",
+  "request" : {
+    "url" : "/booking_reference",
+    "method" : "GET"
+  },
+  "response" : {
+    "status" : 200,
+    "body" : "75bcd19",
+    "headers" : {
+      "Content-Type" : "text/html;charset=utf-8",
+      "Server" : "CherryPy/18.0.0",
+      "Date" : "Wed, 05 Sep 2018 12:27:15 GMT"
+    }
+  },
+  "uuid" : "21da905a-14da-45bf-9233-892fe84c8800",
+  "persistent" : true
+}
