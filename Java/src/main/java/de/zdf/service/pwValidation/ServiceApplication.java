@@ -14,12 +14,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication(scanBasePackages = {"de.zdf.service.commons", "de.zdf.service.pwValidation"})
 @EnableSwagger2
-public class BrokerServiceApplication extends WebMvcConfigurationSupport {
+public class ServiceApplication extends WebMvcConfigurationSupport {
     @Value("${info.build.version}")
     private String version;
 
     public static void main(String[] args) {
-        SpringApplication.run(BrokerServiceApplication.class, args);
+        SpringApplication.run(ServiceApplication.class, args);
     }
 
     @Bean
