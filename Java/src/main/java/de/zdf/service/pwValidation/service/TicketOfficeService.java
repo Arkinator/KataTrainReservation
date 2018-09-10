@@ -48,7 +48,7 @@ public class TicketOfficeService {
                 numberOfAvailableSeatsInTrain++;
             }
 
-            if (seat.getCoach().equals(coach)) {
+            if (seat.getBooking_reference().isEmpty() && seat.getCoach().equals(coach)) {
                 maximumNumberOfAvailableSeatsInCoach++;
             }
         }
@@ -75,56 +75,24 @@ public class TicketOfficeService {
                     biggestCoach = currentCoach;
                 }
             }
+
         }
         return biggestCoach;
     }
 
-//    private boolean checkIfBiggestCoachNecessary(final String trainId, final int numberOfDesiredSeats) {
-//        //boolean result = false;
-//        TrainResponse trainData = trainDataServiceClient.retrieveNewTrainData(trainId);
-//        int highestSeatNumber = 0;
-//        //String nextCoach = "";
-//        String currentCoach = "";
-//
-//        for (SeatAvailabilityInformation train : trainData.getSeats().values()) {
-//            int currentSeatNumber = Integer.parseInt(train.getSeat_number());
-//
-//            if (currentCoach.equals("")) {
-//                currentCoach = train.getCoach();
-//            }
-//
-//            if (currentSeatNumber > highestSeatNumber) {
-//                highestSeatNumber = currentSeatNumber;
-//            }
-//
-//            if (!currentCoach.equals(train.getCoach())) {
-//                if (numberOfDesiredSeats <= highestSeatNumber) {
-//                    return false;
-//                }
-//            }
-//
-//            currentCoach = train.getCoach();
-//
-//        }
-//        return true;
-//    }
-
     private List<String> mapNumberOfSeatsToActualSeats(final String trainId, final int numberOfSeats) {
         TrainResponse trainResponse = trainDataServiceClient.retrieveNewTrainData(trainId);
-        String coach = selectCoachWithMaximumSeatsAvailable(trainResponse);
         List<String> seatsForReservation = new ArrayList<>();
         int seatsLeftToBeReserved = numberOfSeats;
-
-        //boolean bigCoachNeeded = checkIfBiggestCoachNecessary(trainId, numberOfSeats);
+        //String coach = selectCoachWithMaximumSeatsAvailable(trainResponse);
 
         for (SeatAvailabilityInformation seat : trainResponse.getSeats().values()) {
-            if (seat.getBooking_reference().isEmpty() && seat.) {
-                seatsForReservation.add(seat.getSeat_number() + seat.getCoach());
-                seatsLeftToBeReserved--;
-            } else if (seat.getBooking_reference().isEmpty() && bigCoachNeeded == true) {
+
+            if (seat.getBooking_reference().isEmpty()) {
                 seatsForReservation.add(seat.getSeat_number() + seat.getCoach());
                 seatsLeftToBeReserved--;
             }
+
             if (seatsLeftToBeReserved == 0) {
                 break;
             }
@@ -132,19 +100,5 @@ public class TicketOfficeService {
 
         return seatsForReservation;
     }
-
-//    private boolean enoughSeatsInOneCoach(String trainId, String coach, int numberOfDesiredSeats) {
-//        int numberOfAvailableSeats = 0;
-//
-//        for (SeatAvailabilityInformation eachSeat : trainDataServiceClient.retrieveNewTrainData(trainId).getSeats().values()) {
-//            if (eachSeat.getBooking_reference().isEmpty() && ) {
-//                numberOfAvailableSeats++;
-//            }
-//        }
-//        if (numberOfAvailableSeats < numberOfDesiredSeats) {
-//            throw new RuntimeException(numberOfDesiredSeats + " are too many seats for reservation, just " + numberOfAvailableSeats + "available");
-//        }
-//
-//    }
 
 }
