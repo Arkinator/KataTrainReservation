@@ -56,13 +56,13 @@ public class TrainDataServiceClient {
 
     public boolean reserveSeats(String trainId, List<String> seats, String bookingReference) {
         try {
-            Unirest.post(trainDataServiceUrl + "/reserve")
+            String response = Unirest.post(trainDataServiceUrl + "/reserve")
                     .field("train_id", trainId)
                     .field("seats", trainDataServiceUtil.mapSeatListToJsonString(seats))
                     .field("booking_reference", bookingReference)
-                    .asString();
+                    .asString().getBody();
 
-            return true;
+            return !response.startsWith("already booked with reference:");
         } catch (UnirestException e) {
             throw new RuntimeException("Reserve Service offline", e);
         }
@@ -94,4 +94,13 @@ public class TrainDataServiceClient {
         return requestForSeatAvailability.getSeats().size() > numberOfUnbookedSeats;
     }
 
+    public boolean resetReservations(String trainId) {
+        try {
+            Unirest.get(trainDataServiceUrl + "/reset/"+ trainId)
+                    .asString();
+        } catch (UnirestException e) {
+            System.out.println(e);
+        }
+        return true;
+    }
 }
