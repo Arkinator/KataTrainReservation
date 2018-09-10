@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static de.zdf.service.pwValidation.client.util.TrainDataServiceUtil.selectCoachWithMaximumSeatsAvailable;
 
 @Service
 public class TicketOfficeService {
@@ -61,32 +64,16 @@ public class TicketOfficeService {
         }
     }
 
-    private String selectCoachWithMaximumSeatsAvailable(TrainResponse trainData) {
-        String biggestCoach = "";
-        int highestSeatNumber = 0;
-
-        for (SeatAvailabilityInformation seat : trainData.getSeats().values()) {
-            String currentCoach = seat.getCoach();
-            int currentSeatNumber = Integer.parseInt(seat.getSeat_number());
-
-            if (seat.getBooking_reference().isEmpty()) {
-                if (currentSeatNumber > highestSeatNumber) {
-                    highestSeatNumber = currentSeatNumber;
-                    biggestCoach = currentCoach;
-                }
-            }
-
-        }
-        return biggestCoach;
-    }
-
     private List<String> mapNumberOfSeatsToActualSeats(final String trainId, final int numberOfSeats) {
         TrainResponse trainResponse = trainDataServiceClient.retrieveNewTrainData(trainId);
         List<String> seatsForReservation = new ArrayList<>();
         int seatsLeftToBeReserved = numberOfSeats;
-        //String coach = selectCoachWithMaximumSeatsAvailable(trainResponse);
+        String coach = selectCoachWithMaximumSeatsAvailable(trainResponse);
 
         for (SeatAvailabilityInformation seat : trainResponse.getSeats().values()) {
+            if (!seat.getCoach().equals(coach)) {
+                continue;
+            }
 
             if (seat.getBooking_reference().isEmpty()) {
                 seatsForReservation.add(seat.getSeat_number() + seat.getCoach());
@@ -98,7 +85,11 @@ public class TicketOfficeService {
             }
         }
 
-        return seatsForReservation;
+        if (seatsForReservation.size() == numberOfSeats) {
+            return seatsForReservation;
+        } else {
+            throw new RuntimeException("couldnt reserve enough seats!");
+        }
     }
 
 }

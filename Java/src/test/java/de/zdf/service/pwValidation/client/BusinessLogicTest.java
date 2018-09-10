@@ -50,8 +50,7 @@ public class BusinessLogicTest {
 
         assertThat(reservationResponse.getBooking_reference()).isNotEmpty();
         assertThat(reservationResponse.getSeats())
-                .hasSize(1)
-                .contains("1A");
+                .hasSize(1);
         assertThat(reservationResponse.getTrainId()).isEqualTo("local_1000");
     }
 
@@ -63,8 +62,7 @@ public class BusinessLogicTest {
 
         assertThat(reservationResponse.getBooking_reference()).isNotEmpty();
         assertThat(reservationResponse.getSeats())
-                .hasSize(4)
-                .contains("1B");
+                .hasSize(4);
         assertThat(reservationResponse.getTrainId()).isEqualTo("local_1000");
     }
 
@@ -74,8 +72,7 @@ public class BusinessLogicTest {
 
         assertThat(reservationResponse.getBooking_reference()).isNotEmpty();
         assertThat(reservationResponse.getSeats())
-                .hasSize(4)
-                .contains("1A");
+                .hasSize(4);
         assertThat(reservationResponse.getTrainId()).isEqualTo("local_1000");
     }
 
@@ -86,7 +83,7 @@ public class BusinessLogicTest {
         assertThat(reservationResponse.getBooking_reference()).isNotEmpty();
         assertThat(reservationResponse.getSeats())
                 .hasSize(7)
-                .contains("1B","7B");
+                .contains("1B", "2B", "3B", "4B", "5B", "6B", "7B");
         assertThat(reservationResponse.getTrainId()).isEqualTo("local_1000");
     }
 
