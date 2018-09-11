@@ -42,6 +42,13 @@ public class BusinessLogicTest {
     }
 
     @Test
+    public void reserveSingleSeatInUnknownTrain_ShouldReturnException() {
+        assertThatThrownBy(() -> customerService.makeReservation("local_2000", 1))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("No train found with given trainId");
+    }
+
+    @Test
     public void reserveSingleSeatInEmptyTrain_ShouldReturnOkResponse() {
         ReservationResponse reservationResponse = customerService.makeReservation("local_1000", 1);
 

@@ -70,9 +70,11 @@ public class CustomerServiceControllerTest {
         assertThat(stringResponseEntity.getStatusCode().value()).isEqualTo(400);
     }
 
-    @Test
-    public void customerRequestContainsTrainThatExists() {
-        //customerService = new CustomerService();
-
-    }
+//    @Test
+//    public void unknownTrainIdInRequest_ShouldGive4xx() {
+//        ResponseEntity<String> stringResponseEntity = restTemplate
+//                .getForEntity("/reservationRequest?trainId=local_2000&numberOfDesiredSeats=4", String.class);
+//
+//        //assertThat(stringResponseEntity.getStatusCode().value()).isEqualTo(400);
+//    }
 }

@@ -22,6 +22,13 @@ public class CustomerService {
     private BookingReferenceServiceClient bookingReferenceServiceClient;
 
     public ReservationResponse makeReservation(String trainId, int numberOfDesiredSeats) {
+
+        TrainDataServiceResponse newTrainData = trainDataServiceClient.retrieveNewTrainData(trainId);
+
+        if(newTrainData == null) {
+            throw new RuntimeException("No train found with given trainId");
+        }
+
         //Anzahl der verfügbaren Sitze im Zug prüfen
         checkIfEnoughSeatsAreAvailable(trainId, numberOfDesiredSeats);
 
@@ -40,27 +47,32 @@ public class CustomerService {
 
     private void checkIfEnoughSeatsAreAvailable(String trainId, int numberOfDesiredSeats) {
         TrainDataServiceResponse trainData = trainDataServiceClient.retrieveNewTrainData(trainId);
+        int numberOfAllSeatsInTrain = 0;
         int numberOfAvailableSeatsInTrain = 0;
-        int maximumNumberOfAvailableSeatsInCoach = 0;
+        int numberOfAvailableSeatsInCoach = 0;
         String coach = selectCoachWithMaximumSeatsAvailable(trainData);
 
         for (SeatAvailabilityInformation seat : trainData.getSeats().values()) {
+            numberOfAllSeatsInTrain++;
 
             if (seat.getBooking_reference().isEmpty()) {
                 numberOfAvailableSeatsInTrain++;
             }
 
             if (seat.getBooking_reference().isEmpty() && seat.getCoach().equals(coach)) {
-                maximumNumberOfAvailableSeatsInCoach++;
+                numberOfAvailableSeatsInCoach++;
             }
         }
 
         if (numberOfAvailableSeatsInTrain < numberOfDesiredSeats) {
             throw new RuntimeException(numberOfDesiredSeats + " are too many seats for reservation, just " + numberOfAvailableSeatsInTrain + " seats in the whole train available");
         }
-        if (maximumNumberOfAvailableSeatsInCoach < numberOfDesiredSeats) {
-            throw new RuntimeException(numberOfDesiredSeats + " are too many seats for reservation, just " + maximumNumberOfAvailableSeatsInCoach + " in the biggest coach available");
+        if (numberOfAvailableSeatsInCoach < numberOfDesiredSeats) {
+            throw new RuntimeException(numberOfDesiredSeats + " are too many seats for reservation, just " + numberOfAvailableSeatsInCoach + " in the biggest coach available");
         }
+//        if ((float) numberOfAvailableSeatsInTrain/numberOfAllSeatsInTrain < 0.7) {
+//              throw new RuntimeException("Train is already booked by 70%");
+//        }
     }
 
     private List<String> mapNumberOfSeatsToActualSeats(final String trainId, final int numberOfSeats) {
