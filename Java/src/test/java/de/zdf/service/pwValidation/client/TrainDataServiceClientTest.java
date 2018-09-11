@@ -2,7 +2,7 @@ package de.zdf.service.pwValidation.client;
 
 import com.github.tomakehurst.wiremock.http.Fault;
 import de.zdf.service.pwValidation.client.util.TrainDataServiceUtil;
-import de.zdf.service.pwValidation.data.TrainResponse;
+import de.zdf.service.pwValidation.data.TrainDataServiceResponse;
 import de.zdf.utils.test.wiremock.WiremockTestRule;
 import org.junit.Before;
 import org.junit.Rule;
@@ -12,7 +12,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -39,19 +38,19 @@ public class TrainDataServiceClientTest {
 
     @Test
     public void trainDataServiceWorking() {
-        TrainResponse newTrainResponse = trainDataServiceClient.retrieveNewTrainData("local_1000");
+        TrainDataServiceResponse newTrainDataServiceResponse = trainDataServiceClient.retrieveNewTrainData("local_1000");
 
-        assertThat(newTrainResponse).isNotNull();
-        assertThat(newTrainResponse.getSeats().size()).isGreaterThan(4);
+        assertThat(newTrainDataServiceResponse).isNotNull();
+        assertThat(newTrainDataServiceResponse.getSeats().size()).isGreaterThan(4);
     }
 
     @Test
     public void trainDataCorrectlyParsed() {
-        TrainResponse newTrainResponse = trainDataServiceClient.retrieveNewTrainData("local_1000");
+        TrainDataServiceResponse newTrainDataServiceResponse = trainDataServiceClient.retrieveNewTrainData("local_1000");
 
-        assertThat(newTrainResponse).hasFieldOrProperty("seats");
-        assertThat(newTrainResponse.getSeats()).containsKeys("1A");
-        assertThat(newTrainResponse.getSeats().get("1A"))
+        assertThat(newTrainDataServiceResponse).hasFieldOrProperty("seats");
+        assertThat(newTrainDataServiceResponse.getSeats()).containsKeys("1A");
+        assertThat(newTrainDataServiceResponse.getSeats().get("1A"))
                 .hasFieldOrPropertyWithValue("coach", "A")
                 .hasFieldOrPropertyWithValue("seat_number", "1")
                 .hasFieldOrPropertyWithValue("booking_reference", "");

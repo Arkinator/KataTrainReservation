@@ -1,16 +1,11 @@
-import de.zdf.service.pwValidation.client.TrainDataServiceClient;
 import de.zdf.service.pwValidation.client.util.TrainDataServiceUtil;
 import de.zdf.service.pwValidation.data.SeatAvailabilityInformation;
-import de.zdf.service.pwValidation.data.TrainResponse;
-import org.json.JSONString;
+import de.zdf.service.pwValidation.data.TrainDataServiceResponse;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.Assertions.setRemoveAssertJRelatedElementsFromStackTrace;
 
 public class TrainDataServiceUtilTest {
     TrainDataServiceUtil trainDataServiceUtil = new TrainDataServiceUtil();
@@ -35,7 +30,7 @@ public class TrainDataServiceUtilTest {
 
     @Test
     public void oneCoachOnlyTrain_shouldReturnSaidCoach() {
-        TrainResponse trainTest = new TrainResponse();
+        TrainDataServiceResponse trainTest = new TrainDataServiceResponse();
         trainTest.setSeats(new HashMap<>());
         trainTest.getSeats().put("1A", buildSeatInfo("1", "A", false));
         trainTest.getSeats().put("2A", buildSeatInfo("2", "A", false));
@@ -47,7 +42,7 @@ public class TrainDataServiceUtilTest {
 
     @Test
     public void twoCoachSecondOneLonger_shouldReturnBiggerOne() {
-        TrainResponse trainTest = new TrainResponse();
+        TrainDataServiceResponse trainTest = new TrainDataServiceResponse();
         trainTest.setSeats(new HashMap<>());
         trainTest.getSeats().put("1A", buildSeatInfo("1", "A", false));
         trainTest.getSeats().put("1B", buildSeatInfo("1", "B", false));
@@ -59,7 +54,7 @@ public class TrainDataServiceUtilTest {
 
     @Test
     public void threeCoachSecondOneLongest_shouldReturnSecondOne() {
-        TrainResponse trainTest = new TrainResponse();
+        TrainDataServiceResponse trainTest = new TrainDataServiceResponse();
         trainTest.setSeats(new HashMap<>());
         trainTest.getSeats().put("1A", buildSeatInfo("1", "A", false));
         trainTest.getSeats().put("2A", buildSeatInfo("2", "A", false));
@@ -75,7 +70,7 @@ public class TrainDataServiceUtilTest {
 
     @Test
     public void seatsTakenInLongestCar_shouldSelectShorterCar() {
-        TrainResponse trainTest = new TrainResponse();
+        TrainDataServiceResponse trainTest = new TrainDataServiceResponse();
         trainTest.setSeats(new HashMap<>());
         trainTest.getSeats().put("1A", buildSeatInfo("1", "A", false));
         trainTest.getSeats().put("1B", buildSeatInfo("1", "B", true));

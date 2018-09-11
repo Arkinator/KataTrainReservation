@@ -6,7 +6,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import de.zdf.service.pwValidation.client.util.TrainDataServiceUtil;
 import de.zdf.service.pwValidation.data.SeatAvailabilityInformation;
-import de.zdf.service.pwValidation.data.TrainResponse;
+import de.zdf.service.pwValidation.data.TrainDataServiceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,10 +45,10 @@ public class TrainDataServiceClient {
         });
     }
 
-    public TrainResponse retrieveNewTrainData(String trainId) {
+    public TrainDataServiceResponse retrieveNewTrainData(String trainId) {
         try {
             return Unirest.get(trainDataServiceUrl + "/data_for_train/" + trainId)
-                    .asObject(TrainResponse.class).getBody();
+                    .asObject(TrainDataServiceResponse.class).getBody();
         } catch (UnirestException e) {
             throw new RuntimeException("Train Data Service offline", e);
         }
@@ -69,7 +69,7 @@ public class TrainDataServiceClient {
     }
 
     public boolean checkIfAllSeatsAreAvailable(String trainId) {
-        TrainResponse requestForSeatAvailability = retrieveNewTrainData(trainId);
+        TrainDataServiceResponse requestForSeatAvailability = retrieveNewTrainData(trainId);
 
         int numberOfUnbookedSeats = 0;
         for (SeatAvailabilityInformation seat : requestForSeatAvailability.getSeats().values()) {
@@ -82,7 +82,7 @@ public class TrainDataServiceClient {
     }
 
     public boolean checkIfEnoughSeatsForBookingRequest(String trainId) {
-        TrainResponse requestForSeatAvailability = retrieveNewTrainData(trainId);
+        TrainDataServiceResponse requestForSeatAvailability = retrieveNewTrainData(trainId);
 
         int numberOfUnbookedSeats = 0;
         for (SeatAvailabilityInformation seat : requestForSeatAvailability.getSeats().values()) {

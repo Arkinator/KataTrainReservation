@@ -1,12 +1,10 @@
 package de.zdf.service.pwValidation.client.util;
 
 import de.zdf.service.pwValidation.data.SeatAvailabilityInformation;
-import de.zdf.service.pwValidation.data.TrainResponse;
-import org.apache.commons.collections.MapUtils;
+import de.zdf.service.pwValidation.data.TrainDataServiceResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +26,7 @@ public class TrainDataServiceUtil {
         return result + "]";
     }
 
-    public static String selectCoachWithMaximumSeatsAvailable(TrainResponse trainData) {
+    public static String selectCoachWithMaximumSeatsAvailable(TrainDataServiceResponse trainData) {
         Map<String, Integer> seatCoachMap = populateCoachSeatMap(trainData);
 
         return selectMaximumEntryFromMap(seatCoachMap);
@@ -45,7 +43,7 @@ public class TrainDataServiceUtil {
         return maxCoach;
     }
 
-    private static Map<String, Integer> populateCoachSeatMap(TrainResponse trainData) {
+    private static Map<String, Integer> populateCoachSeatMap(TrainDataServiceResponse trainData) {
         Map<String, Integer> seatCoachMap = new HashMap<>();
 
         for (SeatAvailabilityInformation seat : trainData.getSeats().values()) {

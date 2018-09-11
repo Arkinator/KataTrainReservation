@@ -1,8 +1,7 @@
 package de.zdf.service.pwValidation.client;
 
-import de.zdf.service.pwValidation.client.util.TrainDataServiceUtil;
 import de.zdf.service.pwValidation.data.ReservationResponse;
-import de.zdf.service.pwValidation.service.TicketOfficeService;
+import de.zdf.service.pwValidation.service.CustomerService;
 import de.zdf.utils.test.wiremock.WiremockTestRule;
 import org.junit.Before;
 import org.junit.Rule;
@@ -11,10 +10,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -34,7 +31,7 @@ public class BusinessLogicTest {
     @Autowired
     private BookingReferenceServiceClient bookingReferenceServiceClient;
     @Autowired
-    private TicketOfficeService ticketOfficeService;
+    private CustomerService customerService;
 
     @Before
     public void setup() {
@@ -46,7 +43,7 @@ public class BusinessLogicTest {
 
     @Test
     public void reserveSingleSeatInEmptyTrain_ShouldReturnOkResponse() {
-        ReservationResponse reservationResponse = ticketOfficeService.makeReservation("local_1000", 1);
+        ReservationResponse reservationResponse = customerService.makeReservation("local_1000", 1);
 
         assertThat(reservationResponse.getBooking_reference()).isNotEmpty();
         assertThat(reservationResponse.getSeats())
@@ -56,9 +53,9 @@ public class BusinessLogicTest {
 
     @Test
     public void reserveMultipleSeatsTwice_ShouldReturnOkResponse() {
-        ReservationResponse reservationResponse = ticketOfficeService.makeReservation("local_1000", 4);
+        ReservationResponse reservationResponse = customerService.makeReservation("local_1000", 4);
 
-        reservationResponse = ticketOfficeService.makeReservation("local_1000", 4);
+        reservationResponse = customerService.makeReservation("local_1000", 4);
 
         assertThat(reservationResponse.getBooking_reference()).isNotEmpty();
         assertThat(reservationResponse.getSeats())
@@ -68,7 +65,7 @@ public class BusinessLogicTest {
 
     @Test
     public void reserveMultipleSeats_ShouldReturnMultipleSeats() {
-        ReservationResponse reservationResponse = ticketOfficeService.makeReservation("local_1000", 4);
+        ReservationResponse reservationResponse = customerService.makeReservation("local_1000", 4);
 
         assertThat(reservationResponse.getBooking_reference()).isNotEmpty();
         assertThat(reservationResponse.getSeats())
@@ -78,7 +75,7 @@ public class BusinessLogicTest {
 
     @Test
     public void reserveSeatsInSecondCar_ShouldReturnMultipleSeats() {
-        ReservationResponse reservationResponse = ticketOfficeService.makeReservation("local_1000", 7);
+        ReservationResponse reservationResponse = customerService.makeReservation("local_1000", 7);
 
         assertThat(reservationResponse.getBooking_reference()).isNotEmpty();
         assertThat(reservationResponse.getSeats())
@@ -89,7 +86,7 @@ public class BusinessLogicTest {
 
     @Test
     public void reservingTooManySeatsInOneGo_ShouldReturnException() {
-        assertThatThrownBy(() -> ticketOfficeService.makeReservation("local_1000", 1000))
+        assertThatThrownBy(() -> customerService.makeReservation("local_1000", 1000))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("1000")
                 .hasMessageContaining("too many");
@@ -97,7 +94,7 @@ public class BusinessLogicTest {
 
     @Test
     public void reservingMoreSeatsThenThereAreInASingleCoach_ShouldThrowException() {
-        assertThatThrownBy(() -> ticketOfficeService.makeReservation("local_1000", 10))
+        assertThatThrownBy(() -> customerService.makeReservation("local_1000", 10))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("10")
                 .hasMessageContaining("too many");
@@ -107,7 +104,7 @@ public class BusinessLogicTest {
     public void tooManyReservationsBeingDone_ShouldReturnException() {
         assertThatThrownBy(() -> {
             for (int i = 0; i < 100; i++)
-                ticketOfficeService.makeReservation("local_1000", 1);
+                customerService.makeReservation("local_1000", 1);
         })
                 .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("1")
@@ -126,7 +123,7 @@ public class BusinessLogicTest {
         // execute
         // Mind. einen weiteren Platz dieses Zuges buchen
 //        boolean newTrainResponse = trainDataServiceClient.reserveSeats("local_1000", Collections.singletonList("1C"), "75bcd15");
-        ReservationResponse reservationResponse = ticketOfficeService.makeReservation("local_1000", 4);
+        ReservationResponse reservationResponse = customerService.makeReservation("local_1000", 4);
 
         // assert
         // Hinweis, dass dies nicht möglich ist
