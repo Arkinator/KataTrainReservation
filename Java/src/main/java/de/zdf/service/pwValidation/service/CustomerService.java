@@ -25,10 +25,6 @@ public class CustomerService {
 
         TrainDataServiceResponse newTrainData = trainDataServiceClient.retrieveNewTrainData(trainId);
 
-        if(newTrainData == null) {
-            throw new RuntimeException("No train found with given trainId");
-        }
-
         //Anzahl der verfügbaren Sitze im Zug prüfen
         checkIfEnoughSeatsAreAvailable(trainId, numberOfDesiredSeats);
 

@@ -47,8 +47,12 @@ public class TrainDataServiceClient {
 
     public TrainDataServiceResponse retrieveNewTrainData(String trainId) {
         try {
-            return Unirest.get(trainDataServiceUrl + "/data_for_train/" + trainId)
+            TrainDataServiceResponse body = Unirest.get(trainDataServiceUrl + "/data_for_train/" + trainId)
                     .asObject(TrainDataServiceResponse.class).getBody();
+            if(body == null) {
+                throw new RuntimeException("No train found with given trainId");
+            }
+            return body;
         } catch (UnirestException e) {
             throw new RuntimeException("Train Data Service offline", e);
         }

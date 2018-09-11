@@ -66,14 +66,12 @@ public class TrainDataServiceClientTest {
 
     }
 
-    // Testfall: Nicht genügend Sitze
-//    @Test
-//    public void trainDataCheckIfEnoughSeatsForBookingRequest() {
-//        boolean newTrainResponse = trainDataServiceClient.checkIfEnoughSeatsForBookingRequest("local_1000");
-//
-//        assertThat(newTrainResponse).isEqualTo(true);
-//
-//    }
+    @Test
+    public void unknownTrain_ShouldReturnException() {
+        assertThatThrownBy(() -> trainDataServiceClient.retrieveNewTrainData("local_2000"))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("No train found with given trainId");
+    }
 
     // Testfall: Request an Reservierungsservice korrekt?
     @Test
