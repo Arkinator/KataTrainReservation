@@ -15,8 +15,8 @@ public class CustomerServiceController {
     private CustomerService customerService;
 
     @RequestMapping(value = "/reservationRequest", method = RequestMethod.GET)
-    public ReservationResponse reservationResponse(@RequestParam(value = "trainId") String trainId,
-                                                  @RequestParam(value = "numberOfDesiredSeats") int numberOfDesiredSeats) {
+    public ReservationResponse reservationResponse(@RequestParam(value = "trainId", required = true) String trainId,
+                                                  @RequestParam(value = "numberOfDesiredSeats", required = true) int numberOfDesiredSeats) {
         return customerService.makeReservation(trainId, numberOfDesiredSeats);
     }
 }
